@@ -103,11 +103,11 @@ public class FlashcardsService implements FlashcardsAPI<Long> {
     @Override
     public ResolveResponse resolve(ResolveRequest<Long> resolveRequest) {
         return flashcardPageRepository.findById(resolveRequest.pageId())
-                        .map(flashcardPageEntity -> {
-                            boolean isCorrect = flashcardPageEntity.getAnswer().equals(resolveRequest.answer());
-                            resolvedPageRepository.save(new ResolvedPageEntity(resolveRequest.userId(), resolveRequest.pageId(), resolveRequest.answer(), isCorrect));
-                            return new ResolveResponse(flashcardPageEntity.getAnswer(), resolveRequest.answer(), isCorrect);
-                        })
+                .map(flashcardPageEntity -> {
+                    boolean isCorrect = flashcardPageEntity.getAnswer().equals(resolveRequest.answer());
+                    resolvedPageRepository.save(new ResolvedPageEntity(resolveRequest.userId(), resolveRequest.pageId(), resolveRequest.answer(), isCorrect));
+                    return new ResolveResponse(flashcardPageEntity.getAnswer(), resolveRequest.answer(), isCorrect);
+                })
                 .orElse(null);
 
 

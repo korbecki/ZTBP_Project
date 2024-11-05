@@ -1,6 +1,5 @@
 package pl.ztbd.project.cassandra.entity.key;
 
-import com.datastax.oss.driver.api.core.uuid.Uuids;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.FieldNameConstants;

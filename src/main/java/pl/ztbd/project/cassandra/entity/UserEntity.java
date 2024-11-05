@@ -1,17 +1,16 @@
 package pl.ztbd.project.cassandra.entity;
 
-import com.datastax.oss.driver.api.core.uuid.Uuids;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
-import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
-import org.springframework.data.cassandra.core.mapping.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
+import org.springframework.data.cassandra.core.mapping.Column;
+import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
+import org.springframework.data.cassandra.core.mapping.Table;
 import pl.ztbd.project.security.UserDetails;
-
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
