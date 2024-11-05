@@ -1,4 +1,4 @@
 package pl.ztbd.project.api.dto.response;
 
-public record GetFlashcardsResponse(Long flashcardId, String name, String description) {
+public record GetFlashcardsResponse<I>(I flashcardId, String name, String description) {
 }

@@ -1,7 +1,9 @@
 package pl.ztbd.project.oracle.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
@@ -9,6 +11,8 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class FlashcardEntity {
 
     @Id
@@ -22,4 +26,9 @@ public class FlashcardEntity {
 
     @Column(name = "DESCRIPTION")
     private String description;
+
+    public FlashcardEntity(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 }

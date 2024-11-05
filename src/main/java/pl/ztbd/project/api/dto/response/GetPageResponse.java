@@ -1,4 +1,4 @@
 package pl.ztbd.project.api.dto.response;
 
-public record GetPageResponse(Long pageId, String question) {
+public record GetPageResponse<I>(I pageId, String question) {
 }

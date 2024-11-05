@@ -1,4 +1,4 @@
 package pl.ztbd.project.api.dto.request;
 
-public record GetFlashcardsRequest(Long userId) {
+public record GetFlashcardsRequest<I>(I userId) {
 }

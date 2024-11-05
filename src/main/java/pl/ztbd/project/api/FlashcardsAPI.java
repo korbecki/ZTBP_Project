@@ -7,18 +7,18 @@ import pl.ztbd.project.api.dto.response.ResolveResponse;
 
 import java.util.List;
 
-public interface FlashcardsAPI {
-    boolean addFlashcard(AddFlashcardRequest addFlashcardRequest);
-    boolean addFlashcardPages(List<AddPageRequest> addPageRequest);
+public interface FlashcardsAPI<I> {
+    boolean addFlashcard(AddFlashcardRequest<I> addFlashcardRequest);
+    boolean addFlashcardPages(List<AddPageRequest<I> > addPageRequest);
 
-    boolean removeFlashcard(RemoveFlashcardRequest removeFlashcardRequest);
-    boolean removeFlashcardPage(RemoveFlashcardPageRequest removeFlashcardPage);
+    boolean removeFlashcard(RemoveFlashcardRequest<I>  removeFlashcardRequest);
+    boolean removeFlashcardPage(RemoveFlashcardPageRequest<I>  removeFlashcardPage);
 
-    boolean modifyFlashcard(ModifyFlashcardRequest modifyFlashcardRequest);
-    boolean modifyFlashcardPage(ModifyFlashcardPageRequest modifyFlashcardPage);
+    boolean modifyFlashcard(ModifyFlashcardRequest<I>  modifyFlashcardRequest);
+    boolean modifyFlashcardPage(ModifyFlashcardPageRequest<I>  modifyFlashcardPage);
 
-    List<GetFlashcardsResponse> getFlashcardsResponse(GetFlashcardsRequest getFlashcardsRequest);
-    GetPageResponse getPageResponse(GetPageRequest getPageRequest);
+    List<GetFlashcardsResponse<I> > getFlashcards(GetFlashcardsRequest<I>  getFlashcardsRequest);
+    List<GetPageResponse<I> > getPages(GetPageRequest<I>  getPageRequest);
 
-    ResolveResponse resolve(ResolveRequest resolveRequest);
+    ResolveResponse resolve(ResolveRequest<I> resolveRequest);
 }

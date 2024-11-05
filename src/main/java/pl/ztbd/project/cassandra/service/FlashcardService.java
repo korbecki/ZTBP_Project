@@ -1,5 +1,6 @@
 package pl.ztbd.project.cassandra.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.ztbd.project.api.FlashcardsAPI;
 import pl.ztbd.project.api.dto.request.*;
@@ -10,49 +11,51 @@ import pl.ztbd.project.api.dto.response.ResolveResponse;
 import java.util.List;
 
 @Service
-public class FlashcardService implements FlashcardsAPI {
+@RequiredArgsConstructor
+public class FlashcardService implements FlashcardsAPI<String> {
+
     @Override
-    public boolean addFlashcard(AddFlashcardRequest addFlashcardRequest) {
+    public boolean addFlashcard(AddFlashcardRequest<String> addFlashcardRequest) {
         return false;
     }
 
     @Override
-    public boolean addFlashcardPages(List<AddPageRequest> addPageRequest) {
+    public boolean addFlashcardPages(List<AddPageRequest<String>> addPageRequest) {
         return false;
     }
 
     @Override
-    public boolean removeFlashcard(RemoveFlashcardRequest removeFlashcardRequest) {
+    public boolean removeFlashcard(RemoveFlashcardRequest<String> removeFlashcardRequest) {
         return false;
     }
 
     @Override
-    public boolean removeFlashcardPage(RemoveFlashcardPageRequest removeFlashcardPage) {
+    public boolean removeFlashcardPage(RemoveFlashcardPageRequest<String> removeFlashcardPage) {
         return false;
     }
 
     @Override
-    public boolean modifyFlashcard(ModifyFlashcardRequest modifyFlashcardRequest) {
+    public boolean modifyFlashcard(ModifyFlashcardRequest<String> modifyFlashcardRequest) {
         return false;
     }
 
     @Override
-    public boolean modifyFlashcardPage(ModifyFlashcardPageRequest modifyFlashcardPage) {
+    public boolean modifyFlashcardPage(ModifyFlashcardPageRequest<String> modifyFlashcardPage) {
         return false;
     }
 
     @Override
-    public List<GetFlashcardsResponse> getFlashcardsResponse(GetFlashcardsRequest getFlashcardsRequest) {
+    public List<GetFlashcardsResponse<String>> getFlashcards(GetFlashcardsRequest<String> getFlashcardsRequest) {
         return List.of();
     }
 
     @Override
-    public GetPageResponse getPageResponse(GetPageRequest getPageRequest) {
-        return null;
+    public List<GetPageResponse<String>> getPages(GetPageRequest<String> getPageRequest) {
+        return List.of();
     }
 
     @Override
-    public ResolveResponse resolve(ResolveRequest resolveRequest) {
+    public ResolveResponse resolve(ResolveRequest<String> resolveRequest) {
         return null;
     }
 }

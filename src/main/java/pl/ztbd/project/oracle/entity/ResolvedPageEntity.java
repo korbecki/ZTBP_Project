@@ -35,4 +35,11 @@ public class ResolvedPageEntity {
     @Column(name = "CREATED_AT")
     private OffsetDateTime createdAt;
 
+    public ResolvedPageEntity(Long userId, Long flashcardPageId, String answer, Boolean isCorrect) {
+        this.userId = userId;
+        this.flashcardPageId = flashcardPageId;
+        this.answer = answer;
+        this.isCorrect = isCorrect;
+        createdAt = OffsetDateTime.now();
+    }
 }

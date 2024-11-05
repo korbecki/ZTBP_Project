@@ -1,4 +1,4 @@
 package pl.ztbd.project.api.dto.request;
 
-public record ResolveRequest(Long userId, Long pageId, String answer) {
+public record ResolveRequest<I>(I userId, I pageId, String answer) {
 }

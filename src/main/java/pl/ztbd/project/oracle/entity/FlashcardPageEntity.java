@@ -29,4 +29,11 @@ public class FlashcardPageEntity {
 
     @Column(name = "CREATED_AT")
     private OffsetDateTime createdAt;
+
+    public FlashcardPageEntity(Long flashcardId, String question, String answer) {
+        this.flashcardId = flashcardId;
+        this.question = question;
+        this.answer = answer;
+        this.createdAt = OffsetDateTime.now();
+    }
 }

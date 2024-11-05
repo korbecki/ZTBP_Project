@@ -1,4 +1,4 @@
 package pl.ztbd.project.api.dto.request;
 
-public record GetPageRequest(Long userId, Long flashcardId) {
+public record GetPageRequest<I>(I userId, I flashcardId) {
 }
