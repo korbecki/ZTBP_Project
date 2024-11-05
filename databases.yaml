@@ -1,0 +1,46 @@
+version: '3.9'
+services:
+  oracle_db:
+    image: gvenzl/oracle-xe:21.3.0
+    container_name: oracle_db
+    environment:
+      - "ORACLE_ALLOW_REMOTE=true"
+      - "ORACLE_PASSWORD=oracle"
+      - "ORACLE_DATABASE=flashcards"
+      - "APP_USER=flashcards"
+      - "APP_USER_PASSWORD=flashcards"
+    healthcheck:
+      test: [ "CMD-SHELL", "healthcheck.sh" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    ports:
+      - '1521:1521'
+    volumes:
+      - oracle_data:/opt/oracle/oradata
+    networks:
+      - flashcards
+    mem_reservation: "2G"
+    cpu_count: 4
+  cassandra:
+    image: cassandra:latest
+    container_name: cassandra
+    ports:
+      - "9042:9042"
+    networks:
+      - flashcards
+    environment:
+      - CASS_USERNAME=cassandra
+      - CASS_PASSWORD=cassandra
+    healthcheck:
+      test: [ "CMD", "cqlsh", "-e", "describe keyspaces" ]
+      interval: 5s
+      timeout: 5s
+      retries: 60
+    mem_reservation: "2G"
+    cpu_count: 4
+networks:
+  flashcards:
+    driver: bridge
+volumes:
+  oracle_data:
