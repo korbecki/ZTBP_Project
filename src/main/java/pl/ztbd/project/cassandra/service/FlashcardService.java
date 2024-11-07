@@ -15,12 +15,12 @@ import java.util.List;
 public class FlashcardService implements FlashcardsAPI<String> {
 
     @Override
-    public boolean addFlashcard(AddFlashcardRequest<String> addFlashcardRequest) {
-        return false;
+    public String addFlashcard(AddFlashcardRequest<String> addFlashcardRequest) {
+        return "";
     }
 
     @Override
-    public boolean addFlashcardPages(List<AddPageRequest<?>> addPageRequest) {
+    public boolean addFlashcardPages(AddPagesRequest<String> addPageRequest) {
         return false;
     }
 

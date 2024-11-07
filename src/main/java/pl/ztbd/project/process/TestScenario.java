@@ -56,7 +56,7 @@ public class TestScenario {
         return RandomStringUtils.secure().nextAlphanumeric(10);
     }
 
-    private <ID> String registerAndLogin(UserAPI userAPI, String name, String surname, String password, String userName, String email) {
+    private String registerAndLogin(UserAPI userAPI, String name, String surname, String password, String userName, String email) {
         userAPI.registerUser(new RegisterUserRequest(name, surname, password, userName, email));
         LoginResponse loginResponse = userAPI.login(new LoginRequest(userName, password));
         return loginResponse.token();
@@ -133,10 +133,10 @@ public class TestScenario {
         flashcardsAPI.removeFlashcard(removeRequest);
     }
 
-    private <ID> void logoutAndDeleteAccount(UserAPI userAPI, String token, String userName, String password) {
+    private void logoutAndDeleteAccount(UserAPI userAPI, String token, String userName, String password) {
         userAPI.refreshToken(new RefreshTokenRequest(token, token)); // Assuming token is also the refresh token.
         userAPI.logout(new LogoutRequest(token));
-        LoginResponse loginResponse = userAPI.login(new LoginRequest(userName, password));
+        userAPI.login(new LoginRequest(userName, password));
         userAPI.deleteAccount(new DeleteAccountRequest(token));
     }
 }
