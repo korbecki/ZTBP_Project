@@ -20,7 +20,7 @@ public class FlashcardService implements FlashcardsAPI<String> {
     }
 
     @Override
-    public boolean addFlashcardPages(List<AddPageRequest<String>> addPageRequest) {
+    public boolean addFlashcardPages(List<AddPageRequest<?>> addPageRequest) {
         return false;
     }
 

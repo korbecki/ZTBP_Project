@@ -8,9 +8,9 @@ import pl.ztbd.project.api.dto.response.ResolveResponse;
 import java.util.List;
 
 public interface FlashcardsAPI<ID> {
-    boolean addFlashcard(AddFlashcardRequest<ID> addFlashcardRequest);
+    ID addFlashcard(AddFlashcardRequest<ID> addFlashcardRequest);
 
-    boolean addFlashcardPages(List<AddPageRequest<ID>> addPageRequest);
+    boolean addFlashcardPages(AddPagesRequest<ID> addPageRequest);
 
     boolean removeFlashcard(RemoveFlashcardRequest<ID> removeFlashcardRequest);
 
