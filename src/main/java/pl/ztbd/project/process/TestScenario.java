@@ -7,8 +7,8 @@ import pl.ztbd.project.api.FlashcardsAPI;
 import pl.ztbd.project.api.UserAPI;
 import pl.ztbd.project.api.dto.request.*;
 import pl.ztbd.project.api.dto.response.LoginResponse;
-import pl.ztbd.project.oracle.service.FlashcardsService;
-import pl.ztbd.project.oracle.service.UserService;
+import pl.ztbd.project.oracle.service.OracleFlashcardsService;
+import pl.ztbd.project.oracle.service.OracleUserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +16,13 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class TestScenario {
-    private final FlashcardsService flashcardsService;
-    private final UserService userService;
+    private final OracleFlashcardsService oracleFlashcardsService;
+    private final OracleUserService userService;
 
 
     public void run(int count) {
         for (int i = 0; i < count; i++) {
-            run(flashcardsService, userService);
+            run(oracleFlashcardsService, userService);
         }
     }
 

@@ -8,6 +8,7 @@ import lombok.experimental.FieldNameConstants;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
+import pl.ztbd.project.cassandra.entity.key.RefreshTokenKey;
 
 import java.time.OffsetDateTime;
 
@@ -16,18 +17,15 @@ import java.time.OffsetDateTime;
 @FieldNameConstants
 @NoArgsConstructor
 @Builder
-@Table(value = "resolved_page_by_flashcard")
-public class ResolvedPageByFlashcardEntity {
+@Table(value = "refresh_token")
+public class CassandraRefreshTokenEntity {
 
     @PrimaryKey
-    private ResolvedPageByFlashcardEntity resolvedPageByFlashcardEntity;
+    private RefreshTokenKey refreshTokenKey;
 
-    @Column(value = "answer")
-    private String answer;
+    @Column(value = "refresh_token")
+    private String refreshToken;
 
-    @Column(value = "is_correct")
-    private Boolean isCorrect;
-
-    @Column(value = "created_at")
-    private OffsetDateTime createdAt;
+    @Column(value = "refresh_token_expiration")
+    private OffsetDateTime refreshTokenExpiration;
 }

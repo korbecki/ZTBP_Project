@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FlashcardEntity {
+public class OracleFlashcardEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FLASHCARD-GENERATOR")
@@ -27,7 +27,7 @@ public class FlashcardEntity {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    public FlashcardEntity(String name, String description) {
+    public OracleFlashcardEntity(String name, String description) {
         this.name = name;
         this.description = description;
     }

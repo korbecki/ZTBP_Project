@@ -2,8 +2,11 @@ package pl.ztbd.project.oracle.entity;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.checkerframework.checker.units.qual.A;
 
 import java.time.OffsetDateTime;
 
@@ -11,7 +14,9 @@ import java.time.OffsetDateTime;
 @Entity
 @Setter
 @Getter
-public class ResolvedPageEntity {
+@NoArgsConstructor
+@AllArgsConstructor
+public class OracleResolvedPageEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RESOLVED_PAGE-GENERATOR")
@@ -34,7 +39,7 @@ public class ResolvedPageEntity {
     @Column(name = "CREATED_AT")
     private OffsetDateTime createdAt;
 
-    public ResolvedPageEntity(Long userId, Long flashcardPageId, String answer, Boolean isCorrect) {
+    public OracleResolvedPageEntity(Long userId, Long flashcardPageId, String answer, Boolean isCorrect) {
         this.userId = userId;
         this.flashcardPageId = flashcardPageId;
         this.answer = answer;

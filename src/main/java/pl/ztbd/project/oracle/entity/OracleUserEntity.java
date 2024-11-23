@@ -12,7 +12,7 @@ import pl.ztbd.project.security.UserDetails;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserEntity implements UserDetails {
+public class OracleUserEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USERS-GENERATOR")

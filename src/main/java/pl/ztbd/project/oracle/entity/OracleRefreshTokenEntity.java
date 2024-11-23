@@ -15,7 +15,7 @@ import java.time.OffsetDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RefreshTokenEntity {
+public class OracleRefreshTokenEntity {
 
     @Column(name = "REFRESH_TOKEN_EXPIRATION")
     public OffsetDateTime refreshTokenExpiration;
@@ -29,7 +29,7 @@ public class RefreshTokenEntity {
     @Column(name = "REFRESH_TOKEN")
     private String refreshToken;
 
-    public RefreshTokenEntity(Long userId, OffsetDateTime refreshTokenExpiration, String refreshToken) {
+    public OracleRefreshTokenEntity(Long userId, OffsetDateTime refreshTokenExpiration, String refreshToken) {
         this.userId = userId;
         this.refreshTokenExpiration = refreshTokenExpiration;
         this.refreshToken = refreshToken;

@@ -1,15 +1,23 @@
 package pl.ztbd.project.utils;
 
+import lombok.extern.slf4j.Slf4j;
+
+import java.io.File;
+
+@Slf4j
 public class Timer {
     private long startTime;
     private long pauseTime;
+    private long stopTime;
+    private StepEnum step;
 
-    private Timer() {
+    private Timer(StepEnum step) {
         startTime = System.currentTimeMillis();
+        this.step = step;
     }
 
-    public static Timer start() {
-        return new Timer();
+    public static Timer start(StepEnum step) {
+        return new Timer(step);
     }
 
     public void pause() {
@@ -20,7 +28,13 @@ public class Timer {
         startTime = startTime + (pauseTime - startTime);
     }
 
-    public long getTime() {
-        return System.currentTimeMillis() - startTime;
+    public void stop() {
+        stopTime = System.currentTimeMillis();
+        log.info("{}|{}", step.name(), getTime());
     }
+
+    public long getTime() {
+        return stopTime - startTime;
+    }
+
 }

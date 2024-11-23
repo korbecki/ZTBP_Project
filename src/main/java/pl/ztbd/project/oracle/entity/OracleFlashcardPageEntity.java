@@ -1,7 +1,9 @@
 package pl.ztbd.project.oracle.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.OffsetDateTime;
@@ -10,7 +12,9 @@ import java.time.OffsetDateTime;
 @Entity
 @Setter
 @Getter
-public class FlashcardPageEntity {
+@NoArgsConstructor
+@AllArgsConstructor
+public class OracleFlashcardPageEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FLASHCARD_PAGE-GENERATOR")
@@ -30,7 +34,7 @@ public class FlashcardPageEntity {
     @Column(name = "CREATED_AT")
     private OffsetDateTime createdAt;
 
-    public FlashcardPageEntity(Long flashcardId, String question, String answer) {
+    public OracleFlashcardPageEntity(Long flashcardId, String question, String answer) {
         this.flashcardId = flashcardId;
         this.question = question;
         this.answer = answer;

@@ -2,14 +2,14 @@ package pl.ztbd.project.oracle.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pl.ztbd.project.oracle.entity.RefreshTokenEntity;
+import pl.ztbd.project.oracle.entity.OracleRefreshTokenEntity;
 
 import java.util.Optional;
 
 @Repository
-public interface RefreshTokenRepository extends JpaRepository<RefreshTokenEntity, Long> {
+public interface OracleRefreshTokenRepository extends JpaRepository<OracleRefreshTokenEntity, Long> {
     boolean deleteAllByUserId(Long userId);
 
 
-    Optional<RefreshTokenEntity> findByUserId(Long userId);
+    Optional<OracleRefreshTokenEntity> findByUserId(Long userId);
 }

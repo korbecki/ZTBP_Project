@@ -8,22 +8,22 @@ import pl.ztbd.project.api.dto.request.*;
 import pl.ztbd.project.api.dto.response.LoginResponse;
 import pl.ztbd.project.api.dto.response.MessageResponse;
 import pl.ztbd.project.api.dto.response.RefreshTokenResponse;
-import pl.ztbd.project.oracle.entity.RefreshTokenEntity;
-import pl.ztbd.project.oracle.entity.UserEntity;
-import pl.ztbd.project.oracle.repository.RefreshTokenRepository;
-import pl.ztbd.project.oracle.repository.ResolvedPageRepository;
-import pl.ztbd.project.oracle.repository.UserRepository;
+import pl.ztbd.project.oracle.entity.OracleRefreshTokenEntity;
+import pl.ztbd.project.oracle.entity.OracleUserEntity;
+import pl.ztbd.project.oracle.repository.OracleRefreshTokenRepository;
+import pl.ztbd.project.oracle.repository.OracleResolvedPageRepository;
+import pl.ztbd.project.oracle.repository.OracleUserRepository;
 import pl.ztbd.project.security.JwtService;
 
 import java.time.OffsetDateTime;
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements UserAPI {
+public class OracleUserService implements UserAPI {
 
-    private final UserRepository userRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
-    private final ResolvedPageRepository resolvedPageRepository;
+    private final OracleUserRepository userRepository;
+    private final OracleRefreshTokenRepository refreshTokenRepository;
+    private final OracleResolvedPageRepository resolvedPageRepository;
     private final JwtService jwtService;
 
     @Override
@@ -33,7 +33,7 @@ public class UserService implements UserAPI {
             return new MessageResponse("User with email " + registerUserRequest.email() + " already exists");
         }
 
-        UserEntity userEntity = UserEntity.builder()
+        OracleUserEntity userEntity = OracleUserEntity.builder()
                 .name(registerUserRequest.name())
                 .surname(registerUserRequest.surname())
                 .userName(registerUserRequest.userName())
@@ -51,7 +51,7 @@ public class UserService implements UserAPI {
                 .map(userEntity -> {
                     boolean shouldLogin = userEntity.getPassword().equals(loginRequest.password());
                     if (shouldLogin) {
-                        RefreshTokenEntity refreshTokenEntity = refreshTokenRepository.save(new RefreshTokenEntity(userEntity.getId(), OffsetDateTime.now().plusMinutes(30L), Uuids.timeBased().toString()));
+                        OracleRefreshTokenEntity refreshTokenEntity = refreshTokenRepository.save(new OracleRefreshTokenEntity(userEntity.getId(), OffsetDateTime.now().plusMinutes(30L), Uuids.timeBased().toString()));
                         return new LoginResponse(jwtService.generateToken(loginRequest.email()), refreshTokenEntity.getRefreshToken());
                     }
                     return null;
@@ -72,12 +72,12 @@ public class UserService implements UserAPI {
         String email = jwtService.extractEmail(refreshTokenRequest.token());
         return userRepository.findByEmail(email)
                 .map(userEntity -> {
-                    RefreshTokenEntity refreshTokenEntity = refreshTokenRepository.findByUserId(userEntity.getId()).orElse(null);
+                    OracleRefreshTokenEntity refreshTokenEntity = refreshTokenRepository.findByUserId(userEntity.getId()).orElse(null);
                     if (refreshTokenEntity != null) {
                         boolean isRefreshTokenValid = refreshTokenEntity.getRefreshToken().equals(refreshTokenRequest.refreshToken());
                         if (isRefreshTokenValid) {
                             refreshTokenRepository.delete(refreshTokenEntity);
-                            RefreshTokenEntity validRefreshToken = refreshTokenRepository.save(new RefreshTokenEntity(userEntity.getId(), OffsetDateTime.now().plusMinutes(30L), Uuids.timeBased().toString()));
+                            OracleRefreshTokenEntity validRefreshToken = refreshTokenRepository.save(new OracleRefreshTokenEntity(userEntity.getId(), OffsetDateTime.now().plusMinutes(30L), Uuids.timeBased().toString()));
                             return new RefreshTokenResponse(jwtService.generateToken(userEntity.getEmail()), validRefreshToken.getRefreshToken());
                         }
                     }

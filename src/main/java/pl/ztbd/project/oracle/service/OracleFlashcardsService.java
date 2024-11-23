@@ -1,68 +1,66 @@
 package pl.ztbd.project.oracle.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import pl.ztbd.project.api.FlashcardsAPI;
 import pl.ztbd.project.api.dto.request.*;
 import pl.ztbd.project.api.dto.response.GetFlashcardsResponse;
 import pl.ztbd.project.api.dto.response.GetPageResponse;
 import pl.ztbd.project.api.dto.response.ResolveResponse;
-import pl.ztbd.project.oracle.entity.FlashcardEntity;
-import pl.ztbd.project.oracle.entity.FlashcardPageEntity;
-import pl.ztbd.project.oracle.entity.ResolvedPageEntity;
-import pl.ztbd.project.oracle.entity.UserEntity;
-import pl.ztbd.project.oracle.repository.FlashcardPageRepository;
-import pl.ztbd.project.oracle.repository.FlashcardRepository;
-import pl.ztbd.project.oracle.repository.ResolvedPageRepository;
-import pl.ztbd.project.oracle.repository.UserRepository;
+import pl.ztbd.project.oracle.entity.OracleFlashcardEntity;
+import pl.ztbd.project.oracle.entity.OracleFlashcardPageEntity;
+import pl.ztbd.project.oracle.entity.OracleResolvedPageEntity;
+import pl.ztbd.project.oracle.entity.OracleUserEntity;
+import pl.ztbd.project.oracle.repository.OracleFlashcardPageRepository;
+import pl.ztbd.project.oracle.repository.OracleFlashcardRepository;
+import pl.ztbd.project.oracle.repository.OracleResolvedPageRepository;
+import pl.ztbd.project.oracle.repository.OracleUserRepository;
 import pl.ztbd.project.security.JwtService;
 
 import java.util.List;
 
-@Service
 @RequiredArgsConstructor
-public class FlashcardsService implements FlashcardsAPI<Long> {
-    private final UserRepository userRepository;
-    private final FlashcardRepository flashcardRepository;
-    private final FlashcardPageRepository flashcardPageRepository;
-    private final ResolvedPageRepository resolvedPageRepository;
+public class OracleFlashcardsService implements FlashcardsAPI<Long> {
+    private final OracleUserRepository userRepository;
+    private final OracleFlashcardRepository flashcardRepository;
+    private final OracleFlashcardPageRepository oracleFlashcardPageRepository;
+    private final OracleResolvedPageRepository resolvedPageRepository;
     private final JwtService jwtService;
 
     @Override
     public Long addFlashcard(AddFlashcardRequest<Long> addFlashcardRequest) {
-        UserEntity userEntity = authenticateUser(addFlashcardRequest.token());
+        OracleUserEntity userEntity = authenticateUser(addFlashcardRequest.token());
         if (userEntity == null) {
             return null;
         }
 
-        FlashcardEntity flashcardEntity = flashcardRepository.save(new FlashcardEntity(addFlashcardRequest.name(), addFlashcardRequest.description()));
-        List<FlashcardPageEntity> flashcardPageEntities = addFlashcardRequest.pages()
+        OracleFlashcardEntity flashcardEntity = flashcardRepository.save(new OracleFlashcardEntity(addFlashcardRequest.name(), addFlashcardRequest.description()));
+        List<OracleFlashcardPageEntity> flashcardPageEntities = addFlashcardRequest.pages()
                 .stream()
-                .map(page -> new FlashcardPageEntity(flashcardEntity.getId(), page.question(), page.answer()))
+                .map(page -> new OracleFlashcardPageEntity(flashcardEntity.getId(), page.question(), page.answer()))
                 .toList();
-        flashcardPageRepository.saveAll(flashcardPageEntities);
+        oracleFlashcardPageRepository.saveAll(flashcardPageEntities);
         return flashcardEntity.getId();
     }
 
     @Override
     public boolean addFlashcardPages(AddPagesRequest<Long> addPageRequest) {
-        UserEntity userEntity = authenticateUser(addPageRequest.token());
+        OracleUserEntity userEntity = authenticateUser(addPageRequest.token());
         if (userEntity == null) {
             return false;
         }
 
-        List<FlashcardPageEntity> flashcardPageEntities = addPageRequest
+        List<OracleFlashcardPageEntity> flashcardPageEntities = addPageRequest
                 .addPageRequestList()
                 .stream()
-                .map(page -> new FlashcardPageEntity(page.flashcardId(), page.question(), page.answer()))
+                .map(page -> new OracleFlashcardPageEntity(page.flashcardId(), page.question(), page.answer()))
                 .toList();
-        flashcardPageRepository.saveAll(flashcardPageEntities);
+        oracleFlashcardPageRepository.saveAll(flashcardPageEntities);
         return true;
     }
 
     @Override
     public boolean removeFlashcard(RemoveFlashcardRequest<Long> removeFlashcardRequest) {
-        UserEntity userEntity = authenticateUser(removeFlashcardRequest.token());
+        OracleUserEntity userEntity = authenticateUser(removeFlashcardRequest.token());
         if (userEntity == null) {
             return false;
         }
@@ -73,18 +71,18 @@ public class FlashcardsService implements FlashcardsAPI<Long> {
 
     @Override
     public boolean removeFlashcardPage(RemoveFlashcardPageRequest<Long> removeFlashcardPage) {
-        UserEntity userEntity = authenticateUser(removeFlashcardPage.token());
+        OracleUserEntity userEntity = authenticateUser(removeFlashcardPage.token());
         if (userEntity == null) {
             return false;
         }
 
-        flashcardPageRepository.deleteById(removeFlashcardPage.pageId());
+        oracleFlashcardPageRepository.deleteById(removeFlashcardPage.pageId());
         return true;
     }
 
     @Override
     public boolean modifyFlashcard(ModifyFlashcardRequest<Long> modifyFlashcardRequest) {
-        UserEntity userEntity = authenticateUser(modifyFlashcardRequest.token());
+        OracleUserEntity userEntity = authenticateUser(modifyFlashcardRequest.token());
         if (userEntity == null) {
             return false;
         }
@@ -103,16 +101,16 @@ public class FlashcardsService implements FlashcardsAPI<Long> {
 
     @Override
     public boolean modifyFlashcardPage(ModifyFlashcardPageRequest<Long> modifyFlashcardPage) {
-        UserEntity userEntity = authenticateUser(modifyFlashcardPage.token());
+        OracleUserEntity userEntity = authenticateUser(modifyFlashcardPage.token());
         if (userEntity == null) {
             return false;
         }
 
-        return flashcardPageRepository.findById(modifyFlashcardPage.pageId())
+        return oracleFlashcardPageRepository.findById(modifyFlashcardPage.pageId())
                 .map(flashcardPageEntity -> {
                     flashcardPageEntity.setQuestion(modifyFlashcardPage.question());
                     flashcardPageEntity.setAnswer(modifyFlashcardPage.answer());
-                    flashcardPageRepository.save(flashcardPageEntity);
+                    oracleFlashcardPageRepository.save(flashcardPageEntity);
                     return true;
                 })
                 .orElse(false);
@@ -120,7 +118,7 @@ public class FlashcardsService implements FlashcardsAPI<Long> {
 
     @Override
     public List<GetFlashcardsResponse<Long>> getFlashcards(GetFlashcardsRequest<Long> getFlashcardsRequest) {
-        UserEntity userEntity = authenticateUser(getFlashcardsRequest.token());
+        OracleUserEntity userEntity = authenticateUser(getFlashcardsRequest.token());
         if (userEntity == null) {
             return null;
         }
@@ -133,12 +131,12 @@ public class FlashcardsService implements FlashcardsAPI<Long> {
 
     @Override
     public List<GetPageResponse<Long>> getPages(GetPageRequest<Long> getPageRequest) {
-        UserEntity userEntity = authenticateUser(getPageRequest.token());
+        OracleUserEntity userEntity = authenticateUser(getPageRequest.token());
         if (userEntity == null) {
             return null;
         }
 
-        return flashcardPageRepository.findAllByFlashcardId(getPageRequest.flashcardId())
+        return oracleFlashcardPageRepository.findAllByFlashcardId(getPageRequest.flashcardId())
                 .stream()
                 .map(flashcardPageEntity -> new GetPageResponse<Long>(flashcardPageEntity.getId(), flashcardPageEntity.getQuestion()))
                 .toList();
@@ -146,16 +144,16 @@ public class FlashcardsService implements FlashcardsAPI<Long> {
 
     @Override
     public ResolveResponse resolve(ResolveRequest<Long> resolveRequest) {
-        UserEntity userEntity = authenticateUser(resolveRequest.token());
+        OracleUserEntity userEntity = authenticateUser(resolveRequest.token());
         if (userEntity == null) {
             return null;
         }
 
-        return flashcardPageRepository.findById(resolveRequest.pageId())
+        return oracleFlashcardPageRepository.findById(resolveRequest.pageId())
                 .map(flashcardPageEntity -> {
 
                     boolean isCorrect = flashcardPageEntity.getAnswer().equals(resolveRequest.answer());
-                    resolvedPageRepository.save(new ResolvedPageEntity(userEntity.getId(), resolveRequest.pageId(), resolveRequest.answer(), isCorrect));
+                    resolvedPageRepository.save(new OracleResolvedPageEntity(userEntity.getId(), resolveRequest.pageId(), resolveRequest.answer(), isCorrect));
                     return new ResolveResponse(flashcardPageEntity.getAnswer(), resolveRequest.answer(), isCorrect);
                 })
                 .orElse(null);
@@ -163,7 +161,7 @@ public class FlashcardsService implements FlashcardsAPI<Long> {
 
     }
 
-    private UserEntity authenticateUser(String token) {
+    private OracleUserEntity authenticateUser(String token) {
         String email = jwtService.extractEmail(token);
         return userRepository.findByEmail(email).orElse(null);
     }

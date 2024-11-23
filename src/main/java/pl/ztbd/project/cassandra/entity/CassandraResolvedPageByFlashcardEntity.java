@@ -8,7 +8,6 @@ import lombok.experimental.FieldNameConstants;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
-import pl.ztbd.project.cassandra.entity.key.PageByFlashcardEntityKey;
 
 import java.time.OffsetDateTime;
 
@@ -17,17 +16,17 @@ import java.time.OffsetDateTime;
 @FieldNameConstants
 @NoArgsConstructor
 @Builder
-@Table(value = "page_by_flashcard")
-public class PageByFlashcardEntity {
+@Table(value = "resolved_page_by_flashcard")
+public class CassandraResolvedPageByFlashcardEntity {
 
     @PrimaryKey
-    private PageByFlashcardEntityKey pageByFlashcardEntityKey;
-
-    @Column(value = "question")
-    private String question;
+    private CassandraResolvedPageByFlashcardEntity resolvedPageByFlashcardEntity;
 
     @Column(value = "answer")
     private String answer;
+
+    @Column(value = "is_correct")
+    private Boolean isCorrect;
 
     @Column(value = "created_at")
     private OffsetDateTime createdAt;
