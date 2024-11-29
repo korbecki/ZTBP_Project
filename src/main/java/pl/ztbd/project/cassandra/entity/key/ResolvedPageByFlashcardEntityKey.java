@@ -14,7 +14,7 @@ import java.util.UUID;
 @FieldNameConstants
 @Data
 @AllArgsConstructor
-public class ResolvedPageByFlashcardEntity {
+public class ResolvedPageByFlashcardEntityKey {
 
     @PrimaryKeyColumn(ordinal = 0, type = PrimaryKeyType.PARTITIONED, name = "user_email")
     private String userEmail;
