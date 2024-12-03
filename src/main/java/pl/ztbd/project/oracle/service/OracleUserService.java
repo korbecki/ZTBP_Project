@@ -1,6 +1,7 @@
 package pl.ztbd.project.oracle.service;
 
 import com.datastax.oss.driver.api.core.uuid.Uuids;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.ztbd.project.api.UserAPI;
@@ -19,6 +20,7 @@ import java.time.OffsetDateTime;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class OracleUserService implements UserAPI {
 
     private final OracleUserRepository userRepository;
@@ -63,7 +65,8 @@ public class OracleUserService implements UserAPI {
     public boolean logout(LogoutRequest logoutRequest) {
         String email = jwtService.extractEmail(logoutRequest.token());
         return userRepository.findByEmail(email)
-                .map(user -> refreshTokenRepository.deleteAllByUserId(user.getId()))
+                .map(user -> {refreshTokenRepository.deleteAllByUserId(user.getId());
+                return true;})
                 .orElse(false);
     }
 
@@ -94,6 +97,7 @@ public class OracleUserService implements UserAPI {
                 .map(userEntity -> {
                     refreshTokenRepository.deleteAllByUserId(userEntity.getId());
                     resolvedPageRepository.deleteAllByUserId(userEntity.getId());
+                    userRepository.deleteById(userEntity.getId());
                     return true;
                 }).orElse(false);
     }

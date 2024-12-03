@@ -20,8 +20,14 @@ services:
       - oracle_data:/opt/oracle/oradata
     networks:
       - flashcards
-    mem_reservation: "2G"
-    cpu_count: 4
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: '2G'
+        reservations:
+          cpus: '4'
+          memory: '2G'
   cassandra:
     image: cassandra:latest
     container_name: cassandra
@@ -37,8 +43,14 @@ services:
       interval: 5s
       timeout: 5s
       retries: 60
-    mem_reservation: "2G"
-    cpu_count: 4
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: '12G'
+        reservations:
+          cpus: '4'
+          memory: '12G'
 networks:
   flashcards:
     driver: bridge

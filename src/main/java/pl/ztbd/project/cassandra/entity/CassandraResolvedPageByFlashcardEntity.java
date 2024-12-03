@@ -10,6 +10,7 @@ import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 import pl.ztbd.project.cassandra.entity.key.ResolvedPageByFlashcardEntityKey;
 
+import java.time.Instant;
 import java.time.OffsetDateTime;
 
 @Data
@@ -21,7 +22,7 @@ import java.time.OffsetDateTime;
 public class CassandraResolvedPageByFlashcardEntity {
 
     @PrimaryKey
-    private ResolvedPageByFlashcardEntityKey resolvedPageByFlashcardEntity;
+    private ResolvedPageByFlashcardEntityKey resolvedPageByFlashcardEntityKey;
 
     @Column(value = "answer")
     private String answer;
@@ -30,5 +31,5 @@ public class CassandraResolvedPageByFlashcardEntity {
     private Boolean isCorrect;
 
     @Column(value = "created_at")
-    private OffsetDateTime createdAt;
+    private Instant createdAt;
 }

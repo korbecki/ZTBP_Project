@@ -52,7 +52,7 @@ public class CassandraFlashcardService implements FlashcardsAPI<String> {
                         .pageByFlashcardEntityKey(new PageByFlashcardEntityKey(flashcardEntity.getId(), UUID.randomUUID()))
                         .question(page.question())
                         .answer(page.answer())
-                        .createdAt(OffsetDateTime.now())
+                        .createdAt(OffsetDateTime.now().toInstant())
                         .build())
                 .toList();
 
@@ -72,7 +72,7 @@ public class CassandraFlashcardService implements FlashcardsAPI<String> {
                         .pageByFlashcardEntityKey(new PageByFlashcardEntityKey(UUID.fromString(page.flashcardId()), UUID.randomUUID()))
                         .question(page.question())
                         .answer(page.answer())
-                        .createdAt(OffsetDateTime.now())
+                        .createdAt(OffsetDateTime.now().toInstant())
                         .build())
                 .toList();
 
@@ -101,6 +101,7 @@ public class CassandraFlashcardService implements FlashcardsAPI<String> {
         pageByFlashcardRepository.deleteById(
                 new PageByFlashcardEntityKey(UUID.fromString(removeFlashcardPage.flashcardId()), UUID.fromString(removeFlashcardPage.pageId()))
         );
+        resolvedPageByFlashcardRepository.deleteAllByResolvedPageByFlashcardEntityKey_UserEmailAndResolvedPageByFlashcardEntityKey_FlashcardPageId(userEntity.getEmail(), UUID.fromString(removeFlashcardPage.pageId()));
         return true;
     }
 
@@ -160,7 +161,7 @@ public class CassandraFlashcardService implements FlashcardsAPI<String> {
             return null;
         }
 
-        return pageByFlashcardRepository.findAllByFlashcardId(UUID.fromString(getPageRequest.flashcardId())).stream()
+        return pageByFlashcardRepository.findAllByPageByFlashcardEntityKey_FlashcardId(UUID.fromString(getPageRequest.flashcardId())).stream()
                 .map(page -> new GetPageResponse<>(
                         page.getPageByFlashcardEntityKey().getFlashcardPageId().toString(),
                         page.getQuestion()))
@@ -181,13 +182,13 @@ public class CassandraFlashcardService implements FlashcardsAPI<String> {
 
             resolvedPageByFlashcardRepository.save(
                     CassandraResolvedPageByFlashcardEntity.builder()
-                            .resolvedPageByFlashcardEntity(new ResolvedPageByFlashcardEntityKey(
+                            .resolvedPageByFlashcardEntityKey(new ResolvedPageByFlashcardEntityKey(
                                     userEntity.getEmail(),
                                     UUID.fromString(resolveRequest.flashcardId()),
                                     UUID.fromString(resolveRequest.pageId())))
                             .answer(resolveRequest.answer())
                             .isCorrect(isCorrect)
-                            .createdAt(OffsetDateTime.now())
+                            .createdAt(OffsetDateTime.now().toInstant())
                             .build()
             );
             return new ResolveResponse(page.getAnswer(), resolveRequest.answer(), isCorrect);

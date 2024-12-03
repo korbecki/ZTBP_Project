@@ -8,4 +8,6 @@ import pl.ztbd.project.oracle.entity.OracleResolvedPageEntity;
 public interface OracleResolvedPageRepository extends JpaRepository<OracleResolvedPageEntity, Long> {
 
     void deleteAllByUserId(Long userId);
+
+    void deleteAllByFlashcardPageId(Long flashcardPageId);
 }

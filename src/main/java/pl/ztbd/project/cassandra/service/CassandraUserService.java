@@ -12,6 +12,7 @@ import pl.ztbd.project.cassandra.entity.CassandraRefreshTokenEntity;
 import pl.ztbd.project.cassandra.entity.CassandraUserEntity;
 import pl.ztbd.project.cassandra.entity.key.RefreshTokenKey;
 import pl.ztbd.project.cassandra.repository.CassandraRefreshTokenRepository;
+import pl.ztbd.project.cassandra.repository.CassandraResolvedPageByFlashcardRepository;
 import pl.ztbd.project.cassandra.repository.CassandraUserRepository;
 import pl.ztbd.project.security.JwtService;
 
@@ -24,6 +25,7 @@ public class CassandraUserService implements UserAPI {
 
     private final CassandraUserRepository userRepository;
     private final CassandraRefreshTokenRepository refreshTokenRepository;
+    private final CassandraResolvedPageByFlashcardRepository resolvedPageByFlashcardRepository;
     private final JwtService jwtService;
 
     @Override
@@ -51,12 +53,12 @@ public class CassandraUserService implements UserAPI {
                 .map(userEntity -> {
                     boolean shouldLogin = userEntity.getPassword().equals(loginRequest.password());
                     if (shouldLogin) {
-                        RefreshTokenKey key = new RefreshTokenKey(userEntity.getEmail(), UUID.randomUUID().toString());
+                        RefreshTokenKey key = new RefreshTokenKey(userEntity.getEmail(), UUID.randomUUID());
 
                         CassandraRefreshTokenEntity refreshTokenEntity = new CassandraRefreshTokenEntity(
                                 key,
-                                UUID.randomUUID().toString(),
-                                OffsetDateTime.now().plusMinutes(30L)
+                                Uuids.timeBased().toString(),
+                                OffsetDateTime.now().plusMinutes(30L).toInstant()
                         );
 
                         refreshTokenRepository.save(refreshTokenEntity);
@@ -72,7 +74,7 @@ public class CassandraUserService implements UserAPI {
     public boolean logout(LogoutRequest logoutRequest) {
         String email = jwtService.extractEmail(logoutRequest.token());
         return userRepository.findByEmail(email)
-                .map(user -> refreshTokenRepository.deleteAllByUserEmail(user.getEmail()))
+                .map(user -> refreshTokenRepository.deleteAllByRefreshTokenKey_UserEmail(user.getEmail()))
                 .orElse(false);
     }
 
@@ -81,14 +83,14 @@ public class CassandraUserService implements UserAPI {
         String email = jwtService.extractEmail(refreshTokenRequest.token());
         return userRepository.findByEmail(email)
                 .map(userEntity -> {
-                    CassandraRefreshTokenEntity refreshTokenEntity = refreshTokenRepository.findByUserEmail(userEntity.getEmail()).orElse(null);
+                    CassandraRefreshTokenEntity refreshTokenEntity = refreshTokenRepository.findByRefreshTokenKey_UserEmail(userEntity.getEmail()).orElse(null);
                     if (refreshTokenEntity != null) {
                         boolean isRefreshTokenValid = refreshTokenEntity.getRefreshToken().equals(refreshTokenRequest.refreshToken());
                         if (isRefreshTokenValid) {
                             refreshTokenRepository.delete(refreshTokenEntity);
-                            RefreshTokenKey key = new RefreshTokenKey(userEntity.getEmail(), UUID.randomUUID().toString());
-                            CassandraRefreshTokenEntity validRefreshToken = refreshTokenRepository.save(new CassandraRefreshTokenEntity(key, Uuids.timeBased().toString(), OffsetDateTime.now().plusMinutes(30L)));
-                            return new RefreshTokenResponse(jwtService.generateToken(userEntity.getEmail()), validRefreshToken.getRefreshToken());
+                            RefreshTokenKey key = new RefreshTokenKey(userEntity.getEmail(), UUID.randomUUID());
+                            CassandraRefreshTokenEntity validRefreshToken = refreshTokenRepository.save(new CassandraRefreshTokenEntity(key, Uuids.timeBased().toString(), OffsetDateTime.now().plusMinutes(30L).toInstant()));
+                            return new RefreshTokenResponse(jwtService.generateToken(userEntity.getEmail()), validRefreshToken.getRefreshToken().toString());
                         }
                     }
                     return null;
@@ -101,7 +103,9 @@ public class CassandraUserService implements UserAPI {
         String email = jwtService.extractEmail(deleteAccountRequest.token());
         return userRepository.findByEmail(email)
                 .map(userEntity -> {
-                    refreshTokenRepository.deleteAllByUserEmail(userEntity.getEmail());
+                    refreshTokenRepository.deleteAllByRefreshTokenKey_UserEmail(userEntity.getEmail());
+                    resolvedPageByFlashcardRepository.deleteAllByResolvedPageByFlashcardEntityKey_UserEmail(userEntity.getEmail());
+                    userRepository.deleteById(userEntity.getEmail());
                     return true;
                 }).orElse(false);
     }

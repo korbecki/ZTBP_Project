@@ -1,4 +1,15 @@
 package pl.ztbd.project.utils;
 
 public enum StepEnum {
+    REGISTER,
+    LOGIN,
+    ADD_NEW_FLASHCARD,
+    ADD_PAGES_TO_FLASHCARD,
+    MODIFY_FLASHCARD,
+    MODIFY_FLASHCARD_PAGES,
+    RESOLVE_PAGES,
+    REMOVE_PAGES,
+    REMOVE_FLASHCARD,
+    LOGOUT_AND_DELETE_ACCOUNT,
+    FULL_TEST
 }

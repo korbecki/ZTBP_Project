@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface OracleRefreshTokenRepository extends JpaRepository<OracleRefreshTokenEntity, Long> {
-    boolean deleteAllByUserId(Long userId);
+    void deleteAllByUserId(Long userId);
 
 
     Optional<OracleRefreshTokenEntity> findByUserId(Long userId);

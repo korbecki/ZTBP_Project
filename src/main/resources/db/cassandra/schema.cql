@@ -38,7 +38,7 @@ CREATE TABLE page_by_flashcard
 CREATE TABLE resolved_page_by_flashcard
 (
     resolved_page_id  UUID,
-    user_email        UUID,
+    user_email        VARCHAR,
     flashcard_page_id UUID,
     answer            VARCHAR,
     is_correct        BOOLEAN,

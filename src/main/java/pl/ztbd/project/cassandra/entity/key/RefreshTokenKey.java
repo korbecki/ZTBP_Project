@@ -7,6 +7,8 @@ import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyClass;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 
+import java.util.UUID;
+
 @PrimaryKeyClass
 @FieldNameConstants
 @Data
@@ -17,5 +19,5 @@ public class RefreshTokenKey {
     private String userEmail;
 
     @PrimaryKeyColumn(ordinal = 1, type = PrimaryKeyType.CLUSTERED, name = "refresh_token_id")
-    private String refreshTokenId;
+    private UUID refreshTokenId;
 }

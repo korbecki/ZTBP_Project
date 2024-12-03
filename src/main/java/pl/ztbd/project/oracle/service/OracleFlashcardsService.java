@@ -1,6 +1,8 @@
 package pl.ztbd.project.oracle.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import pl.ztbd.project.api.FlashcardsAPI;
 import pl.ztbd.project.api.dto.request.*;
 import pl.ztbd.project.api.dto.response.GetFlashcardsResponse;
@@ -19,12 +21,15 @@ import pl.ztbd.project.security.JwtService;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Service
+@Transactional
 public class OracleFlashcardsService implements FlashcardsAPI<Long> {
     private final OracleUserRepository userRepository;
     private final OracleFlashcardRepository flashcardRepository;
     private final OracleFlashcardPageRepository oracleFlashcardPageRepository;
     private final OracleResolvedPageRepository resolvedPageRepository;
     private final JwtService jwtService;
+    private final OracleResolvedPageRepository oracleResolvedPageRepository;
 
     @Override
     public Long addFlashcard(AddFlashcardRequest<Long> addFlashcardRequest) {
@@ -75,7 +80,7 @@ public class OracleFlashcardsService implements FlashcardsAPI<Long> {
         if (userEntity == null) {
             return false;
         }
-
+        oracleResolvedPageRepository.deleteAllByFlashcardPageId(removeFlashcardPage.pageId());
         oracleFlashcardPageRepository.deleteById(removeFlashcardPage.pageId());
         return true;
     }

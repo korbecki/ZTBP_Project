@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface CassandraRefreshTokenRepository extends CassandraRepository<CassandraRefreshTokenEntity, RefreshTokenKey> {
-    Optional<CassandraRefreshTokenEntity> findByUserEmail(String userEmail);
+    Optional<CassandraRefreshTokenEntity> findByRefreshTokenKey_UserEmail(String userEmail);
 
-    boolean deleteAllByUserEmail(String userEmail);
+    boolean deleteAllByRefreshTokenKey_UserEmail(String userEmail);
 }

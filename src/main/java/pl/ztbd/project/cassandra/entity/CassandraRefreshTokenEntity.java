@@ -10,7 +10,9 @@ import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 import pl.ztbd.project.cassandra.entity.key.RefreshTokenKey;
 
+import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -27,5 +29,5 @@ public class CassandraRefreshTokenEntity {
     private String refreshToken;
 
     @Column(value = "refresh_token_expiration")
-    private OffsetDateTime refreshTokenExpiration;
+    private Instant refreshTokenExpiration;
 }

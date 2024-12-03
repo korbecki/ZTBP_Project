@@ -12,7 +12,7 @@ public class Timer {
     private StepEnum step;
 
     private Timer(StepEnum step) {
-        startTime = System.currentTimeMillis();
+        startTime = System.nanoTime();
         this.step = step;
     }
 
@@ -21,7 +21,7 @@ public class Timer {
     }
 
     public void pause() {
-        pauseTime = System.currentTimeMillis();
+        pauseTime = System.nanoTime();
     }
 
     public void play() {
@@ -29,7 +29,7 @@ public class Timer {
     }
 
     public void stop() {
-        stopTime = System.currentTimeMillis();
+        stopTime = System.nanoTime();
         log.info("{}|{}", step.name(), getTime());
     }
 

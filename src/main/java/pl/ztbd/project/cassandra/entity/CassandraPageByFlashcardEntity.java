@@ -10,6 +10,7 @@ import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 import pl.ztbd.project.cassandra.entity.key.PageByFlashcardEntityKey;
 
+import java.time.Instant;
 import java.time.OffsetDateTime;
 
 @Data
@@ -30,5 +31,5 @@ public class CassandraPageByFlashcardEntity {
     private String answer;
 
     @Column(value = "created_at")
-    private OffsetDateTime createdAt;
+    private Instant createdAt;
 }

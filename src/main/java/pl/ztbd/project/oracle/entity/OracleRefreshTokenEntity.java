@@ -17,17 +17,20 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 public class OracleRefreshTokenEntity {
 
-    @Column(name = "REFRESH_TOKEN_EXPIRATION")
-    public OffsetDateTime refreshTokenExpiration;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "REFRESH_TOKEN-GENERATOR")
     @SequenceGenerator(name = "REFRESH_TOKEN-GENERATOR", sequenceName = "refresh_token_seq", allocationSize = 1)
     @Column(name = "REFRESH_TOKEN_ID")
     private Long id;
+
     @Column(name = "USER_ID")
     private Long userId;
+
     @Column(name = "REFRESH_TOKEN")
     private String refreshToken;
+
+    @Column(name = "REFRESH_TOKEN_EXPIRATION")
+    public OffsetDateTime refreshTokenExpiration;
 
     public OracleRefreshTokenEntity(Long userId, OffsetDateTime refreshTokenExpiration, String refreshToken) {
         this.userId = userId;

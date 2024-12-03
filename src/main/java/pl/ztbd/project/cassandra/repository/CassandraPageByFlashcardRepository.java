@@ -10,5 +10,5 @@ import java.util.UUID;
 
 @Repository
 public interface CassandraPageByFlashcardRepository extends CassandraRepository<CassandraPageByFlashcardEntity, PageByFlashcardEntityKey> {
-    List<CassandraPageByFlashcardEntity> findAllByFlashcardId(UUID flashcardId);
+    List<CassandraPageByFlashcardEntity> findAllByPageByFlashcardEntityKey_FlashcardId(UUID flashcardId);
 }
